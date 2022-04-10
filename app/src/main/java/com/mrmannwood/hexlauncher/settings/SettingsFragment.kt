@@ -8,21 +8,17 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.role.RoleManagerCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.preference.*
-import com.mrmannwood.hexlauncher.DB
 import com.mrmannwood.hexlauncher.LauncherApplication
 import com.mrmannwood.hexlauncher.allapps.AllAppsListFragment
-import com.mrmannwood.hexlauncher.applist.AppListUpdater
 import com.mrmannwood.hexlauncher.executors.OriginalThreadCallback
 import com.mrmannwood.hexlauncher.executors.PackageManagerExecutor
-import com.mrmannwood.hexlauncher.executors.diskExecutor
-import com.mrmannwood.hexlauncher.iconpack.IconPackFragment
+import com.mrmannwood.hexlauncher.iconpack.IconPackAppListFragment
 import com.mrmannwood.hexlauncher.role.RoleManagerHelper
 import com.mrmannwood.hexlauncher.role.RoleManagerHelper.RoleManagerResult.*
 import com.mrmannwood.hexlauncher.settings.PreferencesRepository.watchPref
@@ -98,7 +94,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 setTitle(R.string.preferences_app_list_icon_pack)
                 setOnPreferenceClickListener {
                     parentFragmentManager.beginTransaction()
-                        .replace(R.id.settings_root, IconPackFragment())
+                        .replace(R.id.settings_root, IconPackAppListFragment())
                         .addToBackStack(null)
                         .commit()
                     true
