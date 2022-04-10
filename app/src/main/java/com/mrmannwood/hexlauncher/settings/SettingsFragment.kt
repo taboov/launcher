@@ -22,6 +22,7 @@ import com.mrmannwood.hexlauncher.applist.AppListUpdater
 import com.mrmannwood.hexlauncher.executors.OriginalThreadCallback
 import com.mrmannwood.hexlauncher.executors.PackageManagerExecutor
 import com.mrmannwood.hexlauncher.executors.diskExecutor
+import com.mrmannwood.hexlauncher.iconpack.IconPackFragment
 import com.mrmannwood.hexlauncher.role.RoleManagerHelper
 import com.mrmannwood.hexlauncher.role.RoleManagerHelper.RoleManagerResult.*
 import com.mrmannwood.hexlauncher.settings.PreferencesRepository.watchPref
@@ -92,6 +93,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 setSummary(R.string.preferences_app_list_all_apps_hotkey_summary)
                 key = PreferenceKeys.Apps.ENABLE_ALL_APPS_HOT_KEY
                 setDefaultValue(false)
+            })
+            addPreference(Preference(activity).apply {
+                setTitle(R.string.preferences_app_list_icon_pack)
+                setOnPreferenceClickListener {
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.settings_root, IconPackFragment())
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
             })
         }
 
