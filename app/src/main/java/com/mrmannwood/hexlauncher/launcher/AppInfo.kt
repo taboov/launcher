@@ -15,7 +15,7 @@ enum class SearchTermType {
 
 interface HexItem {
     val label: String
-    val icon: Provider<Drawable>
+    val icon: Provider<Drawable?>
     val hidden: Boolean
     val backgroundColor: Int
     val backgroundHidden: Boolean
@@ -23,7 +23,7 @@ interface HexItem {
 
 data class AppInfo(
     val packageName: String,
-    override val icon: Provider<Drawable>,
+    override val icon: Provider<Drawable?>,
     override val backgroundColor: Int,
     override val label: String,
     override val hidden: Boolean,
@@ -45,33 +45,37 @@ class Provider<T>(
     private val executor: Executor = InlineExecutor
 ) {
 
+    companion object {
+        private val UNSET = Any()
+    }
+
     init {
         if (executor != InlineExecutor) {
             executor.execute { get() }
         }
     }
 
-    private var t: T? = null
+    private var t: Any? = UNSET
 
     fun get(): T {
         var value = t
-        if (value == null) {
+        if (value == UNSET) {
             synchronized(this) {
                 value = t
-                if (value == null) {
+                if (value == UNSET) {
                     value = init()
                     t = value
                 }
             }
         }
-        return value!!
+        return value as T
     }
 
     fun get(callback: (T) -> Unit) {
-        t?.let {
-            callback(it)
-        } ?: run {
+        if (t == UNSET) {
             executor.execute { callback(get()) }
+        } else {
+            callback(t as T)
         }
     }
 }
