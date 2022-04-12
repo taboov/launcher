@@ -1,12 +1,10 @@
 package com.mrmannwood.hexlauncher.launcher
 
-import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
-import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.mrmannwood.hexlauncher.DB
@@ -45,7 +43,8 @@ fun getSingleAppLiveData(context: Context, packageName: String) : LiveData<AppIn
     }
 }
 
-fun getAppInfoLiveData(appContext: Application, showHidden: Boolean = false) : LiveData<List<AppInfo>> {
+fun getAppInfoLiveData(context: Context, showHidden: Boolean = false) : LiveData<List<AppInfo>> {
+    val appContext = context.applicationContext
     if (showHidden) {
         return makeLiveData(appContext, true)
     }
@@ -55,7 +54,8 @@ fun getAppInfoLiveData(appContext: Application, showHidden: Boolean = false) : L
     return appInfoLiveData!!
 }
 
-private fun makeLiveData(appContext: Application, showHidden: Boolean = false) : LiveData<List<AppInfo>> {
+private fun makeLiveData(context: Context, showHidden: Boolean = false) : LiveData<List<AppInfo>> {
+    val appContext = context.applicationContext
     return Transformations.map(DB.get(appContext).appDataDao().watchApps()) { apps ->
         apps.filter {
             if (showHidden) {
