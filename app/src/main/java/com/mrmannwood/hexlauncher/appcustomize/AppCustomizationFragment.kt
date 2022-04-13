@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.palette.graphics.Palette
@@ -50,7 +51,7 @@ class AppCustomizationFragment : InstrumentedFragment() {
     private var appInfo: AppInfo? = null
     private lateinit var tagsAdapter: Adapter<SearchTerm>
 
-    private lateinit var  viewModel : AppCustomizationViewModel
+    private val  viewModel : AppCustomizationViewModel by viewModels { AppCustomizationViewModelFactory(requireContext(), packageName) }
     private val colorPickerViewModel : ColorPickerViewModel by activityViewModels()
     private val textEntryDialogViewModel : TextEntryDialogViewModel by activityViewModels()
 
@@ -70,7 +71,6 @@ class AppCustomizationFragment : InstrumentedFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, AppCustomizationViewModelFactory(requireContext(), packageName)).get(AppCustomizationViewModel::class.java)
 
         binding.resources = resources
         binding.adapter = CustomizationFragmentDatabindingAdapter
